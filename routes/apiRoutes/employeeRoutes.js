@@ -36,8 +36,8 @@ router.get('/format', (req,res) => {
 });
 
 router.get('/:id', (req,res) => {
-    const sql = `SELECT id AS 'ID', title AS 'Title', salary AS 'Salary', department_id AS 'Dept. ID'
-                FROM roles
+    const sql = `SELECT id AS 'ID', first_name AS 'First Name', last_name AS 'Last Name', role_id AS 'Role ID', manager_id AS 'Manager ID'
+                FROM employees
                 WHERE id = ?`;
     const params = [req.params.id];
     db.query(sql, params, (err,row) => {
@@ -53,10 +53,13 @@ router.get('/:id', (req,res) => {
 });
 
 router.get('/:id/format', (req,res) => {
-    const sql = `SELECT roles.id AS 'ID', roles.title AS 'Title', roles.salary AS 'Salary', departments.dept_name AS 'Dept. Name'
-                FROM roles
-                LEFT JOIN departments ON department_id = departments.id
-                WHERE roles.id = ?`;
+    const sql = `SELECT emp.id AS 'ID', emp.first_name AS 'First Name', emp.last_name AS 'Last Name', roles.title AS 'Title', departments.dept_name AS 'Department',
+                roles.salary AS 'Salary', CONCAT(mng.first_name, ' ', mng.last_name) AS 'Manager'
+                FROM employees emp
+                LEFT JOIN roles ON emp.role_id = roles.id
+                LEFT JOIN departments ON roles.department_id = departments.id
+                LEFT JOIN employees mng ON emp.manager_id = mng.id
+                WHERE emp.id = ?`;
     const params = [req.params.id];
     db.query(sql, params, (err,row) => {
         if(err) {

@@ -112,4 +112,21 @@ function getEmployeesByDepartment(department_id){
     });
 }
 
+function removeEmployee(id){
+    return new Promise((resolve,reject) => {
+        const sql = `DELETE FROM employees
+                    WHERE id = ?`;
+        db.query(sql,id,err => {
+            if (err){
+                reject(err);
+                return;
+            }
+            resolve({
+                ok: true,
+                message: 'Employee deleted from the database.'
+            });
+        });
+    });
+}
+
 module.exports = {getAllEmployees,addEmployee,updateEmployee,getEmployeesByManager,getEmployeesByDepartment};

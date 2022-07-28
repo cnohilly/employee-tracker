@@ -91,4 +91,25 @@ function getEmployeesByManager(manager_id){
     });
 }
 
-module.exports = getAllEmployees;
+function getEmployeesByDepartment(department_id){
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT employees.id AS 'ID', employees.first_name AS 'First Name', employees.last_name AS 'Last Name', roles.title AS 'Title', roles.salary AS 'Salary'
+                    FROM employees
+                    LEFT JOIN roles ON employees.role_id = roles.id
+                    WHERE roles.department_id = ?`;
+        db.query(sql, manager_id,(err, rows) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve({
+                ok: true,
+                message: 'List of all employees retrieved.',
+                fields: fields,
+                data: rows
+            });
+        });
+    });
+}
+
+module.exports = {getAllEmployees,addEmployee,updateEmployee,getEmployeesByManager,getEmployeesByDepartment};

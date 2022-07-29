@@ -35,4 +35,22 @@ function getRolesList() {
     });
 }
 
-module.exports = {getAllRoles, getRolesList};
+function addRole(title, salary, department_id) {
+    return new Promise((resolve, reject) => {
+        const sql = `INSERT INTO roles (title,salary,department_id)
+                    VALUES (?,?,?)`;
+        params = [title, salary, department_id];
+        db.query(sql, params, err => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve({
+                ok: true,
+                message: 'New role added to the database.'
+            });
+        });
+    });
+}
+
+module.exports = { getAllRoles, getRolesList, addRole };

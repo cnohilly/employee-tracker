@@ -1,7 +1,7 @@
 const inquirer = require("inquirer");
 const db = require('./db/connection');
 const { getAllEmployees, getEmployeesList, getEmployeesListExcludingID, getManagersList, addEmployee, updateEmployee, getEmployeesByManager, getEmployeesByDepartment, removeEmployeeByID } = require('./assets/js/employees');
-const { getAllRoles, getRolesList } = require('./assets/js/roles');
+const { getAllRoles, getRolesList, addRole } = require('./assets/js/roles');
 const getDepartmentsList = require('./assets/js/departments');
 const cTable = require('console.table');
 
@@ -226,7 +226,7 @@ const getMainMenu = () => {
                     }];
                     return inquirer.prompt(questions);
                 }).then(answers => {
-                    
+
                 })
                 break;
             case 9: // remove role

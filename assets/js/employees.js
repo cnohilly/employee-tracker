@@ -31,10 +31,27 @@ function getAllEmployees() {
     });
 }
 
+function getEmployeesList(){
+    return new Promise((resolve,reject) => {
+        const sql = `SELECT * FROM employees`;
+        db.query(sql,(err,rows) => {
+            if(err){
+                reject(err);
+                return;
+            }
+            const list = rows.map(row => ({name:`${row.first_name} ${row.last_name}`,value:row.id}));
+            resolve({
+                ok:true,
+                data: list
+            });
+        });
+    });
+}
+
 function addEmployee(first_name, last_name, role_id, manager_id) {
     return new Promise((resolve, reject) => {
         const sql = `INSERT INTO employees (first_name, last_name, role_id, manager_id)
-                    VALUES (?,?,?)`;
+                    VALUES (?,?,?,?)`;
         const params = [first_name, last_name, role_id, manager_id || null];
         db.query(sql, params, (err) => {
             if (err) {
@@ -129,4 +146,4 @@ function removeEmployee(id){
     });
 }
 
-module.exports = {getAllEmployees,addEmployee,updateEmployee,getEmployeesByManager,getEmployeesByDepartment};
+module.exports = {getAllEmployees,getEmployeesList,addEmployee,updateEmployee,getEmployeesByManager,getEmployeesByDepartment};

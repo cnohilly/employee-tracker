@@ -1,7 +1,7 @@
 const inquirer = require("inquirer");
 const db = require('./db/connection');
 const { getAllEmployees, getEmployeesList, getEmployeesListExcludingID, getManagersList, addEmployee, updateEmployee, getEmployeesByManager, getEmployeesByDepartment, removeEmployeeByID } = require('./assets/js/employees');
-const {getAllRoles,getRolesList} = require('./assets/js/roles');
+const { getAllRoles, getRolesList } = require('./assets/js/roles');
 const getDepartmentsList = require('./assets/js/departments');
 const cTable = require('console.table');
 
@@ -202,6 +202,10 @@ const getMainMenu = () => {
                 }).catch(err => { throw err; });
                 break;
             case 7: // view all roles
+                return getAllRoles().then(response => {
+                    console.table(response.data);
+                    return getMainMenu();
+                });
                 break;
             case 8: // add role
                 break;

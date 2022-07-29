@@ -1,5 +1,6 @@
 const db = require('../../db/connection');
 
+// function to query for all roles with relevant data from other tables
 function getAllRoles() {
     return new Promise((resolve, reject) => {
         const sql = `SELECT roles.id AS 'ID', roles.title AS 'Title', departments.dept_name AS 'Department', roles.salary as 'Salary'
@@ -18,6 +19,7 @@ function getAllRoles() {
     });
 }
 
+// function to get an array list of roles to use for inquirer prompts
 function getRolesList() {
     return new Promise((resolve, reject) => {
         const sql = `SELECT * FROM roles`;
@@ -35,6 +37,7 @@ function getRolesList() {
     });
 }
 
+// function to add a role with the provided information
 function addRole(title, salary, department_id) {
     return new Promise((resolve, reject) => {
         const sql = `INSERT INTO roles (title,salary,department_id)
@@ -53,6 +56,7 @@ function addRole(title, salary, department_id) {
     });
 }
 
+// function to remove a role of the specified id
 function removeRoleByID(id) {
     return new Promise((resolve, reject) => {
         const sql = `DELETE FROM roles

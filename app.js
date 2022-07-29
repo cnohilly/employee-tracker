@@ -1,7 +1,8 @@
 const inquirer = require("inquirer");
 const db = require('./db/connection');
-const { getAllEmployees, getEmployeesList, addEmployee, updateEmployee, getEmployeesByManager, getEmployeesByDepartment } = require('./assets/js/employees');
+const { getAllEmployees, getEmployeesList, getEmployeesListExcludingID, addEmployee, updateEmployee, getEmployeesByManager, getEmployeesByDepartment } = require('./assets/js/employees');
 const getRolesList = require('./assets/js/roles');
+const cTable = require('console.table');
 
 const mainMenuChoices = [   // index #
     'View All Employees',   // 0
@@ -45,6 +46,7 @@ const connect = () => {
 const getMainMenu = () => {
     return inquirer.prompt(mainMenu).then(data => {
         const index = mainMenuChoices.indexOf(data.choice);
+        let employee_id,role_id,department_id,manager_id;
         switch (index) {
             case 0: // get all employees
                 return getAllEmployees().then(response => {
@@ -59,7 +61,7 @@ const getMainMenu = () => {
                 });
                 break;
             case 2: // update employee role
-                let employee_id,role_id;
+                employee_id ='', role_id='';
                 return getEmployeesList().then(response => {
                     return inquirer.prompt({
                         type: 'list',
@@ -85,11 +87,31 @@ const getMainMenu = () => {
                     return getMainMenu();
                 }).catch(err => { throw err; });
             case 3: // update employee manager
-                updateEmployee('manager_id', 1, 3).then(response => {
+                employee_id ='', manager_id='';
+                return getEmployeesList().then(response => {
+                    return inquirer.prompt({
+                        type: 'list',
+                        name: 'employee',
+                        message: 'Which employee would you like to update?',
+                        choices: response.data
+                    });
+                }).then(answers => {
+                    employee_id = answers.employee;
+                    return getEmployeesListExcludingID(employee_id);
+                }).then(response => {
+                    return inquirer.prompt({
+                        type: 'list',
+                        name: 'role',
+                        message: 'Which manager would you like to assign to the employee?',
+                        choices: response.data
+                    });
+                }).then(answers => {
+                    manager_id = answers.role;
+                    return updateEmployee('manager_id', employee_id, manager_id);
+                }).then(response => {
                     console.log(response.message);
                     return getMainMenu();
-                });
-                break;
+                }).catch(err => { throw err; });
             case 4: // view employees by manager
                 getEmployeesByManager(3).then(response => {
                     console.table(response.data);
@@ -125,7 +147,7 @@ const getMainMenu = () => {
 
 connect().then(response => {
     return getMainMenu();
-}).then(()=>{
+}).then(() => {
     process.exit();
 }).catch(err => {
     throw err;

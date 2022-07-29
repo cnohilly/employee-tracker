@@ -48,6 +48,31 @@ function getEmployeesList(){
     });
 }
 
+function getEmployeesListExcludingID(id){
+    return new Promise((resolve,reject) => {
+        const sql = `SELECT * FROM employees
+                    WHERE id <> ?`;
+        db.query(sql,id,(err,rows) => {
+            if(err){
+                reject(err);
+                return;
+            }
+            const list = rows.map(row => ({name:`${row.first_name} ${row.last_name}`,value:row.id}));
+            resolve({
+                ok:true,
+                data: list
+            });
+        });
+    });
+}
+
+function getManagersList(){
+    return new Promise((resolve,reject) => {
+        const sql = `SELECT CONCAT(mng.first_name) FROM employees
+                    WHERE manager_id IS NOT NULL`;
+    })
+}
+
 function addEmployee(first_name, last_name, role_id, manager_id) {
     return new Promise((resolve, reject) => {
         const sql = `INSERT INTO employees (first_name, last_name, role_id, manager_id)
@@ -146,4 +171,4 @@ function removeEmployee(id){
     });
 }
 
-module.exports = {getAllEmployees,getEmployeesList,addEmployee,updateEmployee,getEmployeesByManager,getEmployeesByDepartment};
+module.exports = {getAllEmployees,getEmployeesList,getEmployeesListExcludingID,addEmployee,updateEmployee,getEmployeesByManager,getEmployeesByDepartment};

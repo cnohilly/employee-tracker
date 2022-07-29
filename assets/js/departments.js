@@ -51,4 +51,21 @@ function addDepartment(dept_name){
     });
 }
 
+function removeDepartmentByID(id) {
+    return new Promise((resolve, reject) => {
+        const sql = `DELETE FROM departments
+                    WHERE id = ?`;
+        db.query(sql, id, err => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve({
+                ok: true,
+                message: 'Department deleted from the database.'
+            });
+        });
+    });
+}
+
 module.exports = { getAllDepartments, getDepartmentsList };

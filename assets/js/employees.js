@@ -140,7 +140,6 @@ function getEmployeesByManager(manager_id){
             resolve({
                 ok: true,
                 message: 'List of all employees retrieved.',
-                fields: fields,
                 data: rows
             });
         });
@@ -153,7 +152,7 @@ function getEmployeesByDepartment(department_id){
                     FROM employees
                     LEFT JOIN roles ON employees.role_id = roles.id
                     WHERE roles.department_id = ?`;
-        db.query(sql, manager_id,(err, rows) => {
+        db.query(sql, department_id,(err, rows) => {
             if (err) {
                 reject(err);
                 return;
@@ -161,7 +160,6 @@ function getEmployeesByDepartment(department_id){
             resolve({
                 ok: true,
                 message: 'List of all employees retrieved.',
-                fields: fields,
                 data: rows
             });
         });
@@ -185,4 +183,4 @@ function removeEmployee(id){
     });
 }
 
-module.exports = {getAllEmployees,getEmployeesList,getEmployeesListExcludingID,addEmployee,updateEmployee,getEmployeesByManager,getEmployeesByDepartment};
+module.exports = {getAllEmployees,getEmployeesList,getEmployeesListExcludingID,getManagersList,addEmployee,updateEmployee,getEmployeesByManager,getEmployeesByDepartment};

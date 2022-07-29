@@ -1,7 +1,8 @@
 const inquirer = require("inquirer");
 const db = require('./db/connection');
-const { getAllEmployees, getEmployeesList, getEmployeesListExcludingID, addEmployee, updateEmployee, getEmployeesByManager, getEmployeesByDepartment } = require('./assets/js/employees');
+const { getAllEmployees, getEmployeesList, getEmployeesListExcludingID, getManagersList, addEmployee, updateEmployee, getEmployeesByManager, getEmployeesByDepartment } = require('./assets/js/employees');
 const getRolesList = require('./assets/js/roles');
+const getDepartmentsList = require('./assets/js/departments');
 const cTable = require('console.table');
 
 const mainMenuChoices = [   // index #
@@ -46,7 +47,7 @@ const connect = () => {
 const getMainMenu = () => {
     return inquirer.prompt(mainMenu).then(data => {
         const index = mainMenuChoices.indexOf(data.choice);
-        let employee_id,role_id,department_id,manager_id;
+        let employee_id, role_id, department_id, manager_id;
         switch (index) {
             case 0: // get all employees
                 return getAllEmployees().then(response => {
@@ -61,7 +62,7 @@ const getMainMenu = () => {
                 });
                 break;
             case 2: // update employee role
-                employee_id ='', role_id='';
+                employee_id = '', role_id = '';
                 return getEmployeesList().then(response => {
                     return inquirer.prompt({
                         type: 'list',
@@ -87,7 +88,7 @@ const getMainMenu = () => {
                     return getMainMenu();
                 }).catch(err => { throw err; });
             case 3: // update employee manager
-                employee_id ='', manager_id='';
+                employee_id = '', manager_id = '';
                 return getEmployeesList().then(response => {
                     return inquirer.prompt({
                         type: 'list',
@@ -101,25 +102,45 @@ const getMainMenu = () => {
                 }).then(response => {
                     return inquirer.prompt({
                         type: 'list',
-                        name: 'role',
+                        name: 'manager',
                         message: 'Which manager would you like to assign to the employee?',
                         choices: response.data
                     });
                 }).then(answers => {
-                    manager_id = answers.role;
+                    manager_id = answers.manager;
                     return updateEmployee('manager_id', employee_id, manager_id);
                 }).then(response => {
                     console.log(response.message);
                     return getMainMenu();
                 }).catch(err => { throw err; });
             case 4: // view employees by manager
-                getEmployeesByManager(3).then(response => {
+                return getManagersList().then(response => {
+                    return inquirer.prompt({
+                        type: 'list',
+                        name: 'manager',
+                        message: 'Which manager would you like to view the employees of?',
+                        choices: response.data
+                    });
+                }).then(answers => {
+                    manager_id = answers.manager;
+                    return getEmployeesByManager(manager_id);
+                }).then(response => {
                     console.table(response.data);
                     return getMainMenu();
                 });
                 break;
             case 5: // view employees by department
-                getEmployeesByDepartment(2).then(response => {
+                return getDepartmentsList().then(response => {
+                    return inquirer.prompt({
+                        type: 'list',
+                        name: 'department',
+                        message: 'Which department would you like to view the employees of?',
+                        choices: response.data
+                    });
+                }).then(answers => {
+                    department_id = answers.department;
+                    return getEmployeesByDepartment(department_id);
+                }).then(response => {
                     console.table(response.data);
                     return getMainMenu();
                 });

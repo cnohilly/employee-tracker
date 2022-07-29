@@ -1,14 +1,7 @@
 const { response } = require('express');
 const db = require('../../db/connection');
 
-//   'View All Employees',   // 1
-//   'Add Employee',         // 2
-//   'Update Employee Role', // 3
-//   'Update Employee Manager', // 4
-//   'View Employees by Manager', // 5
-//   'View Employees by Department', // 6
-//   'Remove Employee',  // 7
-
+// function to query for all employees with relevant data from other tables
 function getAllEmployees() {
     return new Promise((resolve, reject) => {
         const sql = `SELECT emp.id AS 'ID', emp.first_name AS 'First Name', emp.last_name AS 'Last Name', roles.title AS 'Title', departments.dept_name AS 'Department',
@@ -31,6 +24,7 @@ function getAllEmployees() {
     });
 }
 
+// function to get an array list of employees and their ids to use for inquirer prompts
 function getEmployeesList(){
     return new Promise((resolve,reject) => {
         const sql = `SELECT * FROM employees`;
@@ -48,6 +42,7 @@ function getEmployeesList(){
     });
 }
 
+// function to get an array list of employees excluding the specific id
 function getEmployeesListExcludingID(id){
     return new Promise((resolve,reject) => {
         const sql = `SELECT * FROM employees
@@ -66,6 +61,7 @@ function getEmployeesListExcludingID(id){
     });
 }
 
+// function to get a list of the current managers
 function getManagersList(){
     return new Promise((resolve,reject) => {
         const sql = `SELECT CONCAT(mng.first_name,' ', mng.last_name) AS name, mng.id
@@ -87,6 +83,7 @@ function getManagersList(){
     });
 }
 
+// function to add an employee to the database using provided information
 function addEmployee(first_name, last_name, role_id, manager_id) {
     return new Promise((resolve, reject) => {
         const sql = `INSERT INTO employees (first_name, last_name, role_id, manager_id)
@@ -105,6 +102,7 @@ function addEmployee(first_name, last_name, role_id, manager_id) {
     });
 }
 
+// function to update the employee specified by id for the given column or field to the new supplied value
 function updateEmployee(field, id, value) {
     return new Promise((resolve, reject) => {
         const sql = `UPDATE employees
@@ -124,6 +122,7 @@ function updateEmployee(field, id, value) {
     });
 }
 
+// function to query employees based on their manager
 function getEmployeesByManager(manager_id){
     return new Promise((resolve, reject) => {
         const sql = `SELECT employees.id AS 'ID', employees.first_name AS 'First Name', employees.last_name AS 'Last Name', roles.title AS 'Title', departments.dept_name AS 'Department',
@@ -146,6 +145,7 @@ function getEmployeesByManager(manager_id){
     });
 }
 
+// function to query employees based on the department they work for
 function getEmployeesByDepartment(department_id){
     return new Promise((resolve, reject) => {
         const sql = `SELECT employees.id AS 'ID', employees.first_name AS 'First Name', employees.last_name AS 'Last Name', roles.title AS 'Title', roles.salary AS 'Salary'
@@ -166,6 +166,7 @@ function getEmployeesByDepartment(department_id){
     });
 }
 
+// function to remove an employee by the specified id
 function removeEmployeeByID(id){
     return new Promise((resolve,reject) => {
         const sql = `DELETE FROM employees

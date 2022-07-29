@@ -2,7 +2,7 @@ const inquirer = require("inquirer");
 const db = require('./db/connection');
 const { getAllEmployees, getEmployeesList, getEmployeesListExcludingID, getManagersList, addEmployee, updateEmployee, getEmployeesByManager, getEmployeesByDepartment, removeEmployeeByID } = require('./assets/js/employees');
 const { getAllRoles, getRolesList, addRole, removeRoleByID } = require('./assets/js/roles');
-const getDepartmentsList = require('./assets/js/departments');
+const { getAllDepartments, getDepartmentsList } = require('./assets/js/departments');
 const cTable = require('console.table');
 
 const mainMenuChoices = [   // index #
@@ -53,7 +53,7 @@ const getMainMenu = () => {
                 return getAllEmployees().then(response => {
                     console.table(response.data);
                     return getMainMenu();
-                });
+                }).catch(err => { throw err; });
                 break;
             case 1: // add employee
                 questions = [
@@ -202,7 +202,7 @@ const getMainMenu = () => {
                 return getAllRoles().then(response => {
                     console.table(response.data);
                     return getMainMenu();
-                });
+                }).catch(err => { throw err; });
                 break;
             case 8: // add role
                 questions = [
@@ -249,6 +249,10 @@ const getMainMenu = () => {
                 }).catch(err => { throw err; });
                 break;
             case 10: // view all department
+                return getAllDepartments().then(response => {
+                    console.table(response.data);
+                    return getMainMenu();
+                }).catch(err => { throw err; });
                 break;
             case 11: // add department
                 break;

@@ -34,7 +34,7 @@ function getDepartmentsList() {
     });
 }
 
-function addDepartment(dept_name){
+function addDepartment(dept_name) {
     return new Promise((resolve, reject) => {
         const sql = `INSERT INTO departments (dept_name)
                     VALUES (?)`;
@@ -68,4 +68,4 @@ function removeDepartmentByID(id) {
     });
 }
 
-module.exports = { getAllDepartments, getDepartmentsList };
+module.exports = { getAllDepartments, getDepartmentsList, addDepartment, removeDepartmentByID };

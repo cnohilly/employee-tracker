@@ -1,5 +1,6 @@
 const db = require('../../db/connection');
 
+// function to query for all the departments with relevant information
 function getAllDepartments() {
     return new Promise((resolve, reject) => {
         const sql = `SELECT id AS 'ID', dept_name AS 'Name'
@@ -17,6 +18,7 @@ function getAllDepartments() {
     });
 }
 
+// function to get an array list of all of the departments and their id to use for inquirer prompts
 function getDepartmentsList() {
     return new Promise((resolve, reject) => {
         const sql = `SELECT * FROM departments`;
@@ -34,6 +36,7 @@ function getDepartmentsList() {
     });
 }
 
+// function to add a department to the database using the department name passed in
 function addDepartment(dept_name) {
     return new Promise((resolve, reject) => {
         const sql = `INSERT INTO departments (dept_name)
@@ -51,6 +54,7 @@ function addDepartment(dept_name) {
     });
 }
 
+// function to delete the department for the given id from the database
 function removeDepartmentByID(id) {
     return new Promise((resolve, reject) => {
         const sql = `DELETE FROM departments

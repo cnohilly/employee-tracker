@@ -257,6 +257,20 @@ const getMainMenu = () => {
             case 11: // add department
                 break;
             case 12: // remove department
+                return getDepartmentsList().then(response => {
+                    return inquirer.prompt({
+                        type: 'list',
+                        name: 'department',
+                        message: 'Which department would you like to delete?',
+                        choices: response.data
+                    });
+                }).then(answers => {
+                    department_id = answers.department;
+                    return removeDepartmentByID(department_id);
+                }).then(response => {
+                    console.log(response.message);
+                    return getMainMenu();
+                }).catch(err => { throw err; });
                 break;
             case 13: // quit
                 return;

@@ -1,7 +1,7 @@
 const inquirer = require("inquirer");
 const db = require('./db/connection');
 const { getAllEmployees, getEmployeesList, getEmployeesListExcludingID, getManagersList, addEmployee, updateEmployee, getEmployeesByManager, getEmployeesByDepartment, removeEmployeeByID } = require('./assets/js/employees');
-const getRolesList = require('./assets/js/roles');
+const {getAllRoles,getRolesList} = require('./assets/js/roles');
 const getDepartmentsList = require('./assets/js/departments');
 const cTable = require('console.table');
 

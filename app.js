@@ -208,13 +208,13 @@ const getMainMenu = () => {
                 questions = [
                     {
                         type: 'input',
-                        name: 'role_name',
-                        message: 'What is the name of the new role?'
+                        name: 'title',
+                        message: 'What is the title of the new role?'
                     },
                     {
                         type: 'number',
                         name: 'salary',
-                        message: 'What is the salary for the role?'
+                        message: 'What is the salary for the new role?'
                     }
                 ];
                 return getDepartmentsList().then(response => {
@@ -226,8 +226,11 @@ const getMainMenu = () => {
                     }];
                     return inquirer.prompt(questions);
                 }).then(answers => {
-
-                })
+                    return addRole(answers.title,answers.salary,answers.department_id);
+                }).then(response =>{
+                    console.log(response.message);
+                    return getMainMenu();
+                }).catch(err => { throw err; });
                 break;
             case 9: // remove role
                 break;

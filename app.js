@@ -1,7 +1,7 @@
 const inquirer = require("inquirer");
 const db = require('./db/connection');
 const { getAllEmployees, getEmployeesList, getEmployeesListExcludingID, getManagersList, addEmployee, updateEmployee, getEmployeesByManager, getEmployeesByDepartment, removeEmployeeByID } = require('./assets/js/employees');
-const { getAllRoles, getRolesList, addRole } = require('./assets/js/roles');
+const { getAllRoles, getRolesList, addRole, removeRoleByID } = require('./assets/js/roles');
 const getDepartmentsList = require('./assets/js/departments');
 const cTable = require('console.table');
 
@@ -226,13 +226,27 @@ const getMainMenu = () => {
                     }];
                     return inquirer.prompt(questions);
                 }).then(answers => {
-                    return addRole(answers.title,answers.salary,answers.department_id);
-                }).then(response =>{
+                    return addRole(answers.title, answers.salary, answers.department_id);
+                }).then(response => {
                     console.log(response.message);
                     return getMainMenu();
                 }).catch(err => { throw err; });
                 break;
             case 9: // remove role
+                return getRolesList().then(response => {
+                    return inquirer.prompt({
+                        type: 'list',
+                        name: 'role',
+                        message: 'Which role would you like to delete?',
+                        choices: response.data
+                    });
+                }).then(answers => {
+                    role_id = answers.role;
+                    return removeRoleByID(role_id);
+                }).then(response => {
+                    console.log(response.message);
+                    return getMainMenu();
+                }).catch(err => { throw err; });
                 break;
             case 10: // view all department
                 break;

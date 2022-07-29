@@ -53,4 +53,21 @@ function addRole(title, salary, department_id) {
     });
 }
 
-module.exports = { getAllRoles, getRolesList, addRole };
+function removeRoleByID(id) {
+    return new Promise((resolve, reject) => {
+        const sql = `DELETE FROM roles
+                    WHERE id = ?`;
+        db.query(sql, id, err => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve({
+                ok: true,
+                message: 'Role deleted from the database.'
+            });
+        });
+    });
+}
+
+module.exports = { getAllRoles, getRolesList, addRole, removeRoleByID };

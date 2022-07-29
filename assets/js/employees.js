@@ -68,9 +68,23 @@ function getEmployeesListExcludingID(id){
 
 function getManagersList(){
     return new Promise((resolve,reject) => {
-        const sql = `SELECT CONCAT(mng.first_name) FROM employees
-                    WHERE manager_id IS NOT NULL`;
-    })
+        const sql = `SELECT CONCAT(mng.first_name,' ', mng.last_name) AS name, mng.id
+                    FROM employees emp
+                    LEFT JOIN employees mng ON emp.manager_id = mng.id
+                    WHERE emp.manager_id IS NOT NULL
+                    GROUP BY mng.id`;
+        db.query(sql,(err,rows) => {
+            if(err){
+                reject(err);
+                return;
+            }
+            const list = rows.map(row => ({name:`${row.name}`,value:row.id}));
+            resolve({
+                ok:true,
+                data:list
+            });
+        });
+    });
 }
 
 function addEmployee(first_name, last_name, role_id, manager_id) {

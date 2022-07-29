@@ -56,10 +56,47 @@ const getMainMenu = () => {
                 });
                 break;
             case 1: // add employee
-                return addEmployee('Chris', 'Nohilly', 2, '').then(response => {
+                let questions = [
+                    {
+                        type: 'input',
+                        name: 'first_name',
+                        message: "What is the employee's first name?"
+                    },
+                    {
+                        type: 'input',
+                        name: 'last_name',
+                        message: "What is the employee's last name?"
+                    }
+                ]
+                return getRolesList().then(response => {
+                    questions = [...questions, {
+                        type: 'list',
+                        name: 'role_id',
+                        message: "What is the employee's role?",
+                        choices: response.data
+                    }];
+                    return getEmployeesList();
+                }).then(response => {
+                    questions = [...questions, {
+                        type: 'confirm',
+                        name: 'hasManager',
+                        message: 'Does the employee have a manger?'
+                    },
+                    {
+                        type: 'list',
+                        name: 'manager_id',
+                        message: "Who is the employee's manager?",
+                        choices: response.data,
+                        when: (answers) => answers.hasManager,
+                        default: null
+                    }];
+                    return inquirer.prompt(questions);
+                }).then(answers => {
+                    return addEmployee(answers.first_name, answers.last_name, answers.role_id, answers.manager_id);
+                }).then(response => {
                     console.log(response.message);
                     return getMainMenu();
-                });
+                }).catch(err => { throw err; });
                 break;
             case 2: // update employee role
                 employee_id = '', role_id = '';

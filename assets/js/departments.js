@@ -34,4 +34,21 @@ function getDepartmentsList() {
     });
 }
 
+function addDepartment(dept_name){
+    return new Promise((resolve, reject) => {
+        const sql = `INSERT INTO departments (dept_name)
+                    VALUES (?)`;
+        db.query(sql, dept_name, err => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve({
+                ok: true,
+                message: 'New department added to the database.'
+            });
+        });
+    });
+}
+
 module.exports = { getAllDepartments, getDepartmentsList };

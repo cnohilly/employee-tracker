@@ -255,6 +255,19 @@ const getMainMenu = () => {
                 }).catch(err => { throw err; });
                 break;
             case 11: // add department
+                questions = [
+                    {
+                        type: 'input',
+                        name: 'dept_name',
+                        message: 'What is the name of the new department?'
+                    }
+                ];
+                return inquirer.prompt(questions).then(answers => {
+                    return addDepartment(answers.dept_name);
+                }).then(response => {
+                    console.log(response.message);
+                    return getMainMenu();
+                }).catch(err => { throw err; });
                 break;
             case 12: // remove department
                 return getDepartmentsList().then(response => {

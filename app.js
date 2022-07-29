@@ -1,6 +1,6 @@
 const inquirer = require("inquirer");
 const db = require('./db/connection');
-const { getAllEmployees, getEmployeesList, getEmployeesListExcludingID, getManagersList, addEmployee, updateEmployee, getEmployeesByManager, getEmployeesByDepartment } = require('./assets/js/employees');
+const { getAllEmployees, getEmployeesList, getEmployeesListExcludingID, getManagersList, addEmployee, updateEmployee, getEmployeesByManager, getEmployeesByDepartment, removeEmployeeByID } = require('./assets/js/employees');
 const getRolesList = require('./assets/js/roles');
 const getDepartmentsList = require('./assets/js/departments');
 const cTable = require('console.table');
@@ -87,6 +87,7 @@ const getMainMenu = () => {
                     console.log(response.message);
                     return getMainMenu();
                 }).catch(err => { throw err; });
+                break;
             case 3: // update employee manager
                 employee_id = '', manager_id = '';
                 return getEmployeesList().then(response => {
@@ -113,6 +114,7 @@ const getMainMenu = () => {
                     console.log(response.message);
                     return getMainMenu();
                 }).catch(err => { throw err; });
+                break;
             case 4: // view employees by manager
                 return getManagersList().then(response => {
                     return inquirer.prompt({
@@ -127,7 +129,7 @@ const getMainMenu = () => {
                 }).then(response => {
                     console.table(response.data);
                     return getMainMenu();
-                });
+                }).catch(err => { throw err; });
                 break;
             case 5: // view employees by department
                 return getDepartmentsList().then(response => {
@@ -146,6 +148,21 @@ const getMainMenu = () => {
                 });
                 break;
             case 6: // remove employee
+                employee_id = '', manager_id = '';
+                return getEmployeesList().then(response => {
+                    return inquirer.prompt({
+                        type: 'list',
+                        name: 'employee',
+                        message: 'Which employee would you like to delete?',
+                        choices: response.data
+                    });
+                }).then(answers => {
+                    employee_id = answers.employee;
+                    return removeEmployeeByID(employee_id);
+                }).then(response => {
+                    console.log(response.message);
+                    return getMainMenu();
+                }).catch(err => { throw err; });
                 break;
             case 7: // view all roles
                 break;

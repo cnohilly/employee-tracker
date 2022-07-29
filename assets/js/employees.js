@@ -166,7 +166,7 @@ function getEmployeesByDepartment(department_id){
     });
 }
 
-function removeEmployee(id){
+function removeEmployeeByID(id){
     return new Promise((resolve,reject) => {
         const sql = `DELETE FROM employees
                     WHERE id = ?`;
@@ -183,4 +183,4 @@ function removeEmployee(id){
     });
 }
 
-module.exports = {getAllEmployees,getEmployeesList,getEmployeesListExcludingID,getManagersList,addEmployee,updateEmployee,getEmployeesByManager,getEmployeesByDepartment};
+module.exports = {getAllEmployees,getEmployeesList,getEmployeesListExcludingID,getManagersList,addEmployee,updateEmployee,getEmployeesByManager,getEmployeesByDepartment,removeEmployeeByID};

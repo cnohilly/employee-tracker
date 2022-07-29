@@ -47,7 +47,7 @@ const connect = () => {
 const getMainMenu = () => {
     return inquirer.prompt(mainMenu).then(data => {
         const index = mainMenuChoices.indexOf(data.choice);
-        let employee_id, role_id, department_id, manager_id;
+        let employee_id, role_id, department_id, manager_id, questions;
         switch (index) {
             case 0: // get all employees
                 return getAllEmployees().then(response => {
@@ -56,7 +56,7 @@ const getMainMenu = () => {
                 });
                 break;
             case 1: // add employee
-                let questions = [
+                questions = [
                     {
                         type: 'input',
                         name: 'first_name',
@@ -99,7 +99,6 @@ const getMainMenu = () => {
                 }).catch(err => { throw err; });
                 break;
             case 2: // update employee role
-                employee_id = '', role_id = '';
                 return getEmployeesList().then(response => {
                     return inquirer.prompt({
                         type: 'list',
@@ -126,7 +125,6 @@ const getMainMenu = () => {
                 }).catch(err => { throw err; });
                 break;
             case 3: // update employee manager
-                employee_id = '', manager_id = '';
                 return getEmployeesList().then(response => {
                     return inquirer.prompt({
                         type: 'list',
@@ -185,7 +183,6 @@ const getMainMenu = () => {
                 });
                 break;
             case 6: // remove employee
-                employee_id = '', manager_id = '';
                 return getEmployeesList().then(response => {
                     return inquirer.prompt({
                         type: 'list',
@@ -208,6 +205,29 @@ const getMainMenu = () => {
                 });
                 break;
             case 8: // add role
+                questions = [
+                    {
+                        type: 'input',
+                        name: 'role_name',
+                        message: 'What is the name of the new role?'
+                    },
+                    {
+                        type: 'number',
+                        name: 'salary',
+                        message: 'What is the salary for the role?'
+                    }
+                ];
+                return getDepartmentsList().then(response => {
+                    questions = [...questions, {
+                        type: 'list',
+                        name: 'department_id',
+                        message: 'Which department is this role for?',
+                        choices: response.data
+                    }];
+                    return inquirer.prompt(questions);
+                }).then(answers => {
+                    
+                })
                 break;
             case 9: // remove role
                 break;

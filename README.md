@@ -4,7 +4,7 @@
 
 This project was to create a Command Line Interface (CLI) with a database using Node and the packages Inquirer (version 8.2.4) and mysql2. The code was written to be modular, separating the different queries to be made into different javascript files and accessing them using promises and then statements. The user has the ability to edit most if not all the data of the database through the CLI and appropriate menus are presented to the user to input data for new entries or lists are presented to choose what changes to make.
 
-There is no video yet demonstrating the project.
+Video demonstrating the application: [Employee Tracker](https://www.youtube.com/watch?v=oBKT6TY1lLM)
 
 ## User Story
 
@@ -38,4 +38,6 @@ THEN I am prompted to select an employee to update and their new role and this i
 
 ## Product
 
-I will add a video demonstration of the project when it is completed.
+Demonstration Video: 
+
+[![Video thumbnail demonstrating the command-line employee management application.](./assets/video-thumbnail.jpg)](https://www.youtube.com/watch?v=oBKT6TY1lLM)

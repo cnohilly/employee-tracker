@@ -339,6 +339,7 @@ const getMainMenu = () => {
     });
 };
 
+
 connect().then(response => {
     return getMainMenu();
 }).then(() => {

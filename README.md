@@ -38,6 +38,17 @@ THEN I am prompted to select an employee to update and their new role and this i
 
 ## Product
 
-Demonstration Video: 
+A complete demonstration of the application can be found here: [Employee Tracker Demo](https://www.youtube.com/watch?v=oBKT6TY1lLM)
 
-[![Video thumbnail demonstrating the command-line employee management application.](./assets/video-thumbnail.jpg)](https://www.youtube.com/watch?v=oBKT6TY1lLM)
+Demonstration of the Employee commands:
+
+
+![Demo of the employee commands](./assets/images/employee_commands_demo.gif )
+
+Demonstration of the Role commands:
+
+![Demo of the role commands](./assets/images/role_commands_demo.gif)
+
+Demonstration of the Department commands:
+
+![Demo of the department commands](./assets/images/department_commands_demo.gif)
